@@ -42,7 +42,7 @@ class Second:
                     SCRtasks.append(tsr)
                 else:
                     #SCRenv['log'].output("receive data in to schedule.", level='DEBUG', SCRenv=SCRenv)
-                    # 6 SCRreceiveからSCRscheduleに追加
+                    # SCRreceiveからSCRscheduleに追加
                     SCRschedule.append(sr)
         
         SCRcodes = t_f.get_codes()
@@ -52,8 +52,8 @@ class Second:
         # 書き込み
         if(SCRtasks):
             t_d.create_data(SCRfield=SCRfield, SCRenv=SCRenv, ty='ta', data=SCRtasks)
-        if(SCRschedule):
-            t_d.create_data(SCRfield=SCRfield, SCRenv=SCRenv, ty='sc', data=SCRschedule)
+        t_d.truncate_data(SCRfield=SCRfield, SCRenv=SCRenv, ty='sc')
+        t_d.create_data(SCRfield=SCRfield, SCRenv=SCRenv, ty='sc', data=SCRschedule)
         t_d.create_data(SCRfield=SCRfield, SCRenv=SCRenv, ty='en', data=SCRenv)
         t_d.create_data(SCRfield=SCRfield, SCRenv=SCRenv, ty='fi', data=SCRfield)
 
