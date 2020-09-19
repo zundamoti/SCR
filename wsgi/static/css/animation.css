@@ -1,0 +1,14 @@
+.anime-sc-sec {
+    width: 100px;
+    height: 100px;
+    background: #000;
+    animation: rotation 20s linear 0s infinite normal none running;
+}
+
+@keyframes rotation {
+    0% {}
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

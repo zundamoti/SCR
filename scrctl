@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+# coding: utf-8
+
+import sys
+import config as CONF
+
+from lib.controller import Controller
+from lib.setup import Setup
+from lib.tools.s_logger import S_logger
+
+from lib.tools.tools_arg import Tools_arg
+from lib.tools.tools_data import Tools_data
+
+# scrctl task add 
+
+def scrctl():
+    t_a = Tools_arg()
+
+    parser = t_a.args_get()
+
+    parser.add_argument('what')
+    if(1 < len(sys.argv)):
+        if(sys.argv[1] in set(['task'])):
+            # double cmd
+            parser.add_argument('do')
+        else:
+            # single cmd
+            pass
+        
+        args = t_a.parser_args(parser)
+        
+        if(args.what == 'task' and args.do == 'add'):
+            to_receive(args)
+
+def to_receive(args):
+    setup = Setup()
+    t_a = Tools_arg()
+    t_d = Tools_data()
+
+    SCRfield = setup.field()
+    receive = t_a.args_to_re(args)
+    rc = t_d.redis_con()
+    t_d.insert_receive(SCRfield=SCRfield, rc=rc, receive=receive)
+
+
+if __name__ == "__main__":
+    scrctl()
+    exit(0)

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/animation.css">
+
+    <title>SCR</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div id="app">
+            <header class="main-header">
+                <nav class="row">
+                    <div class="section-start">
+                        <div class="md-title">
+                            <h1>SCR</h1>
+                        </div>
+                    </div>
+                    <div class="section-end">
+                        <div v-on:click="disp_change('data_view')" class="scr-data icon-box">
+                            <div class="icon">
+                                <object type="image/svg+xml" data="/static/assets/data.svg" width="24"
+                                    height="24"></object>
+                            </div>
+                        </div>
+                        <div v-on:click="disp_change('data_view')" class="flash-task icon-box">
+                            <div class="icon">
+                                <object type="image/svg+xml" data="/static/assets/thunder.svg" width="24"
+                                    height="24"></object>
+                            </div>
+                        </div>
+                        <div v-on:click="disp_change('schedule_change')" class="schedule-task icon-box">
+                            <div class="icon">
+                                <object type="image/svg+xml" data="/static/assets/schedule.svg" width="24"
+                                    height="24"></object>
+                            </div>
+                        </div>
+                        <div class="setting icon-box">
+                            <div class="icon">
+                                <object type="image/svg+xml" data="/static/assets/setting.svg" width="24"
+                                    height="24"></object>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+            </header>
+            <div class="md-layout">
+
+                <div class="md-scrollbar">
+
+                    <div v-if="disp.data_view || disp.schedule_change" class="area-window">
+                        <div class="side-area">
+                            <div class="sidemenu"><object type="image/svg+xml" data="/static/assets/menu.svg" width="24"
+                                    height="24"></object></div>
+                            <side-folder></side-folder>
+                        </div>
+                        <div v-if=disp.data_view class="main-area">
+                            <h2>data view</h2>
+                            <data-view v-bind:value=SCRfield></data-view>
+                            <data-view v-bind:value=SCRschedule></data-view>
+                            <data-view v-bind:value=SCRenv></data-view>
+                            <data-view v-bind:value=SCRcodes></data-view>
+                        </div>
+                        <div v-if=disp.schedule_change class="main-area">
+                            <h2>schedule change</h2>
+                            <form>
+                                <h3>add schedule</h3>
+                                <div class="row">
+                                    <label for="">file</label>
+                                    <select v-model="form.folder_select" name="" id="">
+                                        <option v-for="(folder, index) in SCRcodes.json" :value="index">
+                                            {{ folder.folder_name }}
+                                        </option>
+                                    </select>
+
+                                    <label for=""> /</label>
+                                    <select v-model="form.code_select" v-if="SCRcodes.json[form.folder_select].file_list.length" name="" id="">
+                                        <option v-for="code in SCRcodes.json[form.folder_select].file_list"
+                                            :value="code">{{ code }}
+                                        </option>
+                                    </select>
+                                    <select v-else>
+                                        <option value="code" class="cnf">
+                                            no code.
+                                        </option>
+                                    </select>
+                                    <label for=""> sec</label>
+                                    <input v-model="form.sec" type="text">
+                                    <div class="button" v-on:click="receive('add')">add</div>
+                                </div>
+                                <h3>existing schedule</h3>
+                                <data-view-schedule v-for="(sc, index) in SCRschedule.json" v-bind:sc=sc
+                                    v-bind:index=index>
+                                </data-view-schedule>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scr_log">
+
+        </div>
+        <footer class="footer"></footer>
+    </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vue-material"></script>
+    <script src="/static/js/vue_component.js"></script>
+    <script src="/static/js/vue_api.js"></script>
+    <script src="/static/js/anime_api.js"></script>
+    <script>
+        scr_api.ws_setup();
+    </script>
+</body>
+
+</html>
