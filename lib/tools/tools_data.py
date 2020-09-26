@@ -24,7 +24,6 @@ class Tools_data:
             rp = redis.StrictRedis(connection_pool=pool)
             rp.keys()
         except:
-            print('except redis888888')
             #SCRenv['log'].output("Boot to journal mode.", level='DEBUG', SCRenv={'module':'SCR'})
             return 'journal'
         #SCRenv['log'].output("Boot to redis mode.", level='DEBUG', SCRenv={'module':'SCR'})

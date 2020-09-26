@@ -1,5 +1,6 @@
 # code regulator ver 0.3 beta
 Light code management software.
+Do not publish server to the web.
 
 ## Features
 - Schedule management.

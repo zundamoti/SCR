@@ -50,7 +50,6 @@ var scr_api = new Vue({
         return;
       };
       json_data = JSON.parse(data);
-      console.log(json_data);
       for (const key in json_data) {
         scr_api['SCR' + key].json = json_data[key];
         scr_api['SCR' + key].raw = JSON.stringify(scr_api['SCR' + key].json, null, 4);
@@ -63,9 +62,7 @@ var scr_api = new Vue({
       }
       this.disp[display_name] = true;
     },
-    receive: function (mode,index,cmd) {
-      console.log(mode);
-      console.log(index);
+    receive_cmd: function (mode,index,cmd) {
       if(mode == "del"){
         send_json = this.SCRschedule.json[index];
         send_json.c = cmd;
@@ -76,20 +73,32 @@ var scr_api = new Vue({
         send_json["days1"] = false,
         send_json["c"] = "";
 
-        details = {};
-        details["lang"] = "python3";
-        details["file_path"] = this.SCRcodes.json[this.form.folder_select].folder_name;
-        details["file_name"] = this.form.code_select;
+        details = {
+          "lang": "python3",
+          "file_path": this.SCRcodes.json[this.form.folder_select].folder_name,
+          "file_name": this.form.code_select
+        };
         
         send_json['d'] = details;
       };
-
-      console.log(JSON.stringify(send_json));
+      this.receive(send_json);
+    },
+    write_local_conf: function (name) {
+      send_json = {};
+      send_json["c"] = "local_conf";
+      details = {
+        "file_path": name,
+        "data_key": this[name].data
+      };
+      send_json['d'] = details;
+      this.receive(send_json);
+    },
+    receive: function (json) {
 
       let params = new URLSearchParams();
-      params.append('text', JSON.stringify(send_json));
+      params.append('text', JSON.stringify(json));
       
-      axios.post('http://localhost:5015/receive/', params)
+      axios.post('/receive/', params)
         .then(response => {
           console.log('send comp: ' + response.data.text);
         }).catch(error => {
@@ -103,7 +112,8 @@ var scr_api = new Vue({
     'side-folder': Side_folder,
     'side-redis': Side_redis,
     'data-view': Data_view,
-    'data-view-schedule': Data_view_schedule
+    'data-view-schedule': Data_view_schedule,
+    'data-view-field': Data_view_field
   }
 });
 

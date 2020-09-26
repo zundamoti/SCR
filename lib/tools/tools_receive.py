@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import os
+import json
 #import psutil
 import subprocess
 import collections
@@ -20,3 +21,8 @@ class Tools_receive():
                 SCRschedule.pop(sc_index)
                 return SCRschedule
         return SCRschedule
+    
+    def conf_local(self, sr):
+        data = sr['d']['data_key']
+        with open('code/' + sr['d']['file_path'] + '/local_conf.py', 'w') as f:
+            f.write('CONF = ' + json.dumps(data, indent=4))

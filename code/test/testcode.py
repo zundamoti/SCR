@@ -1,1 +1,3 @@
-print('test ok')
+import local_conf as LOCAL
+
+print(LOCAL.CONF['foo'])

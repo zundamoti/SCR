@@ -16,25 +16,18 @@ import config as CONF
  
 
 def api_index(env):
-    status = '200 OK'
-    with open('wsgi/index.html') as f:
-        text = f.read()
-    print(type(text))
+    g_c = Controller()
+    html = g_c.get_index()
     headers = [('Content-Type', 'text/html; charset=utf-8')]
-    return status, headers, [t.encode("utf-8") for t in text.split('\n')]
+    return '200 OK', headers, html
 
-#/rest/get_scr/sc/
 def api_rest(env):
     g_c = Controller()
     json = g_c.get_json(path=env['PATH_INFO'])
-    print(type(json))
-    status = '200 OK'
     headers = [('Content-Type', 'text/json; charset=utf-8')]
-    return status, headers, [bytes(json, encoding='utf-8')]
+    return '200 OK', headers, [bytes(json, encoding='utf-8')]
 
 def api_receive(env):
-    #g_c = Controller()
-    #g_c.receive(env.json)
     t_d = Tools_data()
     setup = Setup()
 
@@ -51,36 +44,45 @@ def api_receive(env):
     except:
         print('error')
 
-    status = '200 OK'
     headers = [('Content-Type', 'text/json; charset=utf-8')]
-    return status, headers, [bytes("okok", encoding='utf-8')]
-
-
-
+    return '200 OK', headers, [bytes("okok", encoding='utf-8')]
 
 #/static/js/exampl.js
 def static(env):
     env_path = env['PATH_INFO']
-    ex = env_path.split('.')[-1]
+    if(os.path.exists('wsgi' + env_path)):
+        with open('wsgi' + env_path) as f:
+            text = f.read()
+        headers = [content_type_map(env_path)]
+    else:
+        return api_400(env=env)
+    
+    return '200 OK', headers, [t.encode("utf-8") for t in text.split('\n')]
 
+def code_static(env):
+    env_path = env['PATH_INFO']
+    folder = env_path.split('/')[2]
+    file_path = '/'.join(env_path.split('/')[4:])
+    try:
+        with open('code/' + folder + '/static/' + file_path) as f:
+            text = f.read()
+        headers = [content_type_map(env_path)]
+    except Exception as e:
+        print(e)
+        return api_400(env=env)
+
+    return '200 OK', headers, [t.encode("utf-8") for t in text.split('\n')]
+
+def content_type_map(env_path):
+    ex = env_path.split('.')[-1]
     ex_dic = {
         'js': 'text/javascript',
         'css': 'text/css',
         'html': 'text/html',
         'svg': 'image/svg+xml'
     }
+    return ('Content-Type', ex_dic[ex] + '; charset=utf-8')
 
-    if(os.path.exists('wsgi' + env_path)):
-        status = '200 OK'
-        with open('wsgi' + env_path) as f:
-            text = f.read()
-        headers = [('Content-Type', ex_dic[ex] + '; charset=utf-8')]
-    else:
-        status = '404 Not Found'
-        text = '404 Not Found'
-        headers = [('Content-Type', 'text/plain; charset=utf-8')]
-    
-    return status, headers, [t.encode("utf-8") for t in text.split('\n')]
 
 def api_400(env):
     message = '400 Bad Request'
@@ -97,7 +99,6 @@ def routing(env):
     router = {
         'GET':{
             '/': api_index,
-            '/rest/': api_rest,
             '/static/': static
         },
         'POST':{
@@ -112,26 +113,28 @@ def routing(env):
         env_path = '/'
     else:
         env_path = '/' + env_path.split('/')[1] + '/'
-    #print(env_path)
         
     if(env_method not in set(['GET', 'POST'])):
-        return api_400(env)
+        return api_400(env=env)
+    elif('code' in env_path):
+        return code_static(env=env)
+    elif('rest' in env_path):
+        return api_rest(env=env)
     elif(env_path in router[env_method]):
-        return router[env_method].get(env_path)(env)
+        return router[env_method].get(env_path)(env=env)
     else:
-        return api_404(env)
+        return api_404(env=env)
 
-def app(env, res):
-    status, headers, html = routing(env)
+def gui(env, res):
+    status, headers, html = routing(env=env)
     res(status, headers)
     return html
-
 
 
 CONF.SCR['module'] = 'WSGI'
 slog = S_logger(SCRenv=CONF.SCR)
 try:
-    httpd = simple_server.make_server(CONF.GUI['address'], CONF.GUI['wsgi_port'], app)
+    httpd = simple_server.make_server(CONF.GUI['address'], CONF.GUI['wsgi_port'], gui)
     slog.output(lv='INFO', log='Serving wsgi-gui server on ' + CONF.GUI['address'] + ':' + str(CONF.GUI['wsgi_port']) + '...')
     httpd.serve_forever()
 except OSError:

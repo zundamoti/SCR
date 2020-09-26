@@ -31,14 +31,21 @@ class Second:
                     # コマンド受取
                     if(sr['c'] == 'delete_schedule'):
                         t_r.delete_schedule(SCRschedule=SCRschedule, sr=sr)
-                    
+                    elif(sr['c'] == 'restart'):
+                        SCRenv['flag'] = 'restart'
+                    elif(sr['c'] == 'exit'):
+                        SCRenv['flag'] = 'exit'
+                    elif(sr['c'] == 'local_conf'):
+                        t_r.conf_local(sr=sr)
+                        
+
                 elif sr['sec'] == 0:
                     #SCRenv['log'].output("receive data to exec task.", level='DEBUG', SCRenv=SCRenv)
                     tsr = {}
                     tsr['d'] = sr['d']
                     SCRenv['max_tid'] += 1
                     tsr['tid'] = SCRenv['max_tid']
-                    tss['sub_id'] = -1
+                    tsr['sub_id'] = -1
                     SCRtasks.append(tsr)
                 else:
                     #SCRenv['log'].output("receive data in to schedule.", level='DEBUG', SCRenv=SCRenv)
@@ -46,14 +53,18 @@ class Second:
                     SCRschedule.append(sr)
         
         SCRcodes = t_f.get_codes()
-        if(len(SCRcodes) != 0):
+        if(0 < len(SCRcodes)):
             t_d.create_data(SCRfield=SCRfield, SCRenv=SCRenv, ty='co', data=SCRcodes)
 
         # 書き込み
-        if(SCRtasks):
+        t_d.truncate_data(SCRfield=SCRfield, SCRenv=SCRenv, ty='ta')
+        if(0 < len(SCRtasks)):
             t_d.create_data(SCRfield=SCRfield, SCRenv=SCRenv, ty='ta', data=SCRtasks)
+        
         t_d.truncate_data(SCRfield=SCRfield, SCRenv=SCRenv, ty='sc')
-        t_d.create_data(SCRfield=SCRfield, SCRenv=SCRenv, ty='sc', data=SCRschedule)
+        if(0 < len(SCRschedule)):
+            t_d.create_data(SCRfield=SCRfield, SCRenv=SCRenv, ty='sc', data=SCRschedule)
+
         t_d.create_data(SCRfield=SCRfield, SCRenv=SCRenv, ty='en', data=SCRenv)
         t_d.create_data(SCRfield=SCRfield, SCRenv=SCRenv, ty='fi', data=SCRfield)
 

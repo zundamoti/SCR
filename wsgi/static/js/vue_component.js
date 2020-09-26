@@ -13,17 +13,26 @@ var Data_view = {
     `
 };
 
+var Data_view_field = {
+    props: ['field'],
+    template: `
+    <div class="row">
+        <p>myid:{{field.json.state.myid}} fid:{{field.json.state.fid}}</p>
+    </div>
+    `
+};
+
 var Data_view_schedule = {
     props: ['sc', 'index'],
     template: `
         <div class="row">
             <p><label>file :</label> {{ sc.d.file_path }} / {{ sc.d.file_name }} <label>sec :</label> {{ sc.sec }}</p>
-            <div class="button" v-on:click="receive('del', index )">del</div>
+            <div class="button" v-on:click="receive_cmd('del', index )">del</div>
         </div>
     `,
     methods: {
-        receive: function (mode,index) {
-            scr_api.receive(mode,index,'delete_schedule');
+        receive_cmd: function (mode,index) {
+            scr_api.receive_cmd(mode,index,'delete_schedule');
           }
     }
 };

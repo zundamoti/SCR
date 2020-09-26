@@ -3,6 +3,7 @@
 from lib.setup import Setup
 
 from lib.tools.tools_data import Tools_data
+from lib.tools.tools_file import Tools_file
 from lib.tools.s_logger import S_logger
 import config as CONF
 
@@ -10,21 +11,35 @@ class Controller:
     
     def get_json(self, path):
         t_d = Tools_data()
-        setup = Setup()
-        SCRfield = setup.field()
         
-        if('/get_scr/' in path):
-            ty = path.split('/')[-2]
-            key = '_'.join([
-                'scr',
-                str(SCRfield['state']['fid']),
-                str(SCRfield['state']['myid']),
-                ty])
-        elif('/get_data/' in path):
-            key = path.split('/')[-2]
+        if('/get_redis/' in path):
+            key = path.split('/')[3]
             
         rc = t_d.redis_con()
         return rc.get(key)
+
+    def get_index(self):
+        t_f = Tools_file()
+        SCRcodes = t_f.get_codes()
+        switch_html, include_html, add_script, add_view = t_f.get_codes_html(SCRcodes=SCRcodes)
+        with open('wsgi/index.html') as f:
+            index_html = f.read()
+        text_list = [t.encode("utf-8") for t in index_html.split('\n')]
+        html = []
+        for tli in range(len(text_list)):
+            low_text = text_list[tli].decode('utf-8')
+            if("@code_html_switch" in low_text):
+                html = html + switch_html.split('\n')
+            elif("@code_html_include" in low_text):
+                html = html + include_html.split('\n')
+            elif("@code_js_add" in low_text):
+                html = html + add_script.split('\n')
+            elif("@code_view_add" in low_text):
+                html = html + add_view.split('\n')
+            else:
+                html.append(text_list[tli])
+        n = bytes('\n', encoding='utf-8')
+        return [ bytes(t, encoding='utf-8') + n if type(t) == str else t + n for t in html ]
 
 
     def websocket_chaser(self, SCRfield, GUIenv, GUIraw):

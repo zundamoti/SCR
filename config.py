@@ -81,6 +81,22 @@ DEFAULT_FIELD = {
     "meta": {
         "near_field": [],
         "near_field_path": []
+    },
+    "docker": {
+        "images":[
+            {
+                "image_id":"",
+                "image_name":"",
+                "image_tag":"",
+                "image_created":"",
+                "image_size":""
+            }
+        ],
+        "containers":[
+            {
+                
+            }
+        ]
     }
 }
 
