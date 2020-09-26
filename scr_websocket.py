@@ -7,10 +7,7 @@ import time
 import json
 
 import config as CONF
-
 from lib.setup import Setup
-
-
 from lib.controller import Controller
 from lib.tools.s_logger import S_logger
 from copy import copy

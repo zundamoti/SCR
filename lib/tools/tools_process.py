@@ -1,7 +1,6 @@
 # coding: utf-8
 
 import os
-#import psutil
 import subprocess
 import collections
 import signal

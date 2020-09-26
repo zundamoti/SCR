@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # coding: utf-8
-# solveig code 
 
 import os
 import sys
@@ -47,7 +46,6 @@ def api_receive(env):
     headers = [('Content-Type', 'text/json; charset=utf-8')]
     return '200 OK', headers, [bytes("okok", encoding='utf-8')]
 
-#/static/js/exampl.js
 def static(env):
     env_path = env['PATH_INFO']
     if(os.path.exists('wsgi' + env_path)):

@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-# solveig code 
-
 from lib.setup import Setup
 from lib.rotation import Rotation
 from lib.second import Second
@@ -13,16 +11,13 @@ def scr():
     second = Second()
     print('>>> SCR start >>>')
     while True:
-        # setup
         SCRfield = setup.field()
         SCRenv = setup.env(SCRfield=SCRfield, roll='SCR')
         SCRtasks = setup.tasks(SCRfield=SCRfield, SCRenv=SCRenv)
         while True:
-            # Rotation
             SCRenv, SCRtasks = rotation.task_run(
                 SCRfield=SCRfield, SCRenv=SCRenv, SCRtasks=SCRtasks)
             if SCRenv['befor'] != SCRenv['now']:
-                # Second
                 SCRenv, SCRtasks = second.task_check(
                     SCRfield=SCRfield, SCRenv=SCRenv, SCRtasks=SCRtasks)
                 if SCRenv['flag'] != 'none':

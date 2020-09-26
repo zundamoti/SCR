@@ -11,7 +11,6 @@ from lib.tools.s_logger import S_logger
 from lib.tools.tools_arg import Tools_arg
 from lib.tools.tools_data import Tools_data
 
-# scrctl task add 
 
 def scrctl():
     t_a = Tools_arg()

@@ -100,8 +100,6 @@ DEFAULT_FIELD = {
     }
 }
 
-
-
 DEFAULT_RECEIVE = {
     "sec": 0,
     "days1": False,

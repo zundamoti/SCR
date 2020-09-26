@@ -1,4 +1,4 @@
 CONF = {
-    "foo": "bbbbb",
+    "foo": 123,
     "bar": 456
 }

@@ -37,7 +37,6 @@ var Data_view_schedule = {
     }
 };
 
-
 var Side_folder = {
     props: ['value'],
     template: `

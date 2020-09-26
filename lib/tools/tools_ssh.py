@@ -1,4 +1,4 @@
-
+# coding: utf-8
 
 class Tools_ssh:
     def get_other_scr_stats(self):

@@ -19,7 +19,7 @@ Do not publish server to the web.
 - 1, setting redis connection to SCR/config.py. 
 - 2, your codes put on SCR/code/[folder]/[codename]
 - 3, run scr_start.py
-- 4, setting schedule and task from browser.
+- 4, setting schedule and task from browser.(localhost:5015)
 
 ## scrctl command
 you can setting schedule and task from command.

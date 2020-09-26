@@ -5,7 +5,6 @@ import sys
 import subprocess
 
 from lib.setup import Setup
-
 from lib.tools.tools_data import Tools_data
 from lib.tools.tools_process import Tools_process
 from lib.tools.s_logger import S_logger
@@ -50,9 +49,6 @@ def scr_sub(my_id):
                     lv='WARN', log='my_id=' + my_id + ' tid=' + str(task['tid']) + ' ' + task['d']['file_name'] + ' except:' + except_mes + ' exit 1 task cancel.', tb=trackback)
 
             t_d.insert_spe(SCRfield=SCRfield, SCRenv=SCRenv, data=task['tid'])
-
-            
-
 
 
 if len(sys.argv) != 0:
