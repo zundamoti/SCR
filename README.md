@@ -1,4 +1,4 @@
-# code regulator ver 0.3 beta
+# code regulator ver 0.3.1 beta
 Light code management software.
 Do not publish server to the web.
 
