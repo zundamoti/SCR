@@ -63,40 +63,8 @@ DEFAULT_FIELD = {
         "fid": 0,
         "bid": 0,
         "ids": [],
-        "interpreter": "cmd",
-        "ssh": [
-            {
-                "name": "example",
-                "details":{
-                    "public_key": "abcdef",
-                    "HOST": '192.168.1.*',
-                    "PORT": '22',
-                    "USER": 'user',
-                    "KEY_PATH": '/HOME~~~',
-                    "PASSWORD": 'password'
-                }
-            }
-        ]
-    },
-    "meta": {
-        "near_field": [],
-        "near_field_path": []
-    },
-    "docker": {
-        "images":[
-            {
-                "image_id":"",
-                "image_name":"",
-                "image_tag":"",
-                "image_created":"",
-                "image_size":""
-            }
-        ],
-        "containers":[
-            {
-                
-            }
-        ]
+        "interpreter": "bash",
+        "ssh": []
     }
 }
 

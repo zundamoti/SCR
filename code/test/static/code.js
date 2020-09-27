@@ -1,7 +1,7 @@
-scr_api.test = {
+temp_scr.data.code.test = {
     data:{
-        "foo":123,
-        "bar":456
+        "foo":"foo_value",
+        "bar":"bar.com"
     },
     receive_testcode:{
         "sec": 0,

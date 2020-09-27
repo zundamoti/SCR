@@ -82,8 +82,8 @@ class Tools_data:
                 re = redis.StrictRedis(connection_pool=SCRenv['pool'])
                 if(0 < re.llen(key)):
                     low = re.llen(key)
-                    data_list += re.lrange(key, 0, low)
-                    re.ltrim(key, 1, low)
+                    data_list += re.lrange(key, 0, low - 1)
+                    re.ltrim(key, low, -1)
             except:
                 #SCRenv['log'].output("failed receive.", level='DEBUG', SCRenv=SCRenv)
                 return False
@@ -105,7 +105,6 @@ class Tools_data:
         de = json.JSONDecoder()
         data_dic_list = []
         for re in data_list:
-            print(re)
             data_dic_list.append(de.decode(re.replace('\'','\"')))
         return data_dic_list
 

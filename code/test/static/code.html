@@ -1,11 +1,25 @@
 <h2>code/test view</h2>
+<p>sample code folder</p>
+<div id="test_1" class="button" v-on:click='$_receive(code.test.receive_testcode)'>test</div>
 
-<div id="test" class="button" v-on:click='receive(test.receive_testcode)'>test</div>
-<div id="test" class="button" v-on:click='write_local_conf("test")'>write local conf</div>
+<h2>local conf make.</h2>
+<p>run <code class="gray">$_write_local_conf("test")</code></p>
+<p>make conf to <code class="gray">scr/code/test/local_conf.py</code></p>
 
 <div>
-    <label for="">test.data.foo = <input v-model="test.data.foo"></label>
+    <label for="">scr.code.test.data.foo = <input v-model="code.test.data.foo"></label>
 </div>
 <div>
-    <label for="">test.data.bar = <input v-model="test.data.bar"></label>
+    <label for="">scr.code.test.data.bar = <input v-model="code.test.data.bar"></label>
 </div>
+
+<pre>
+    <code>
+CONF = {
+    "foo":{{ code.test.data.foo }},
+    "bar":{{ code.test.data.bar }}
+}
+    </code>    
+</pre>
+
+<div id="test_2" class="button" v-on:click='$_write_local_conf("test")'>write local conf</div>

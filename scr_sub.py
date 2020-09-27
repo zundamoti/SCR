@@ -25,7 +25,7 @@ def scr_sub(my_id):
 
     for task in MYtasks:
         if str(task['tid']) not in SCRspe:
-            cmd = task['d']['lang'] + ' code/' + task['d']['file_path'] + '/' + task['d']['file_name']
+            cmd = task['d']['lang'] + ' code/' + task['d']['file_path'] + '/' + task['d']['file_name'].replace('+',' ')
             try:
                 sp_run = subprocess.run(
                     cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
