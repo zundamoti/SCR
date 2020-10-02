@@ -7,6 +7,7 @@ import subprocess
 import collections
 import signal
 
+import config as CONF
 from lib.tools.s_logger import S_logger
 
 class Tools_receive():
@@ -23,6 +24,11 @@ class Tools_receive():
         return SCRschedule
     
     def conf_local(self, sr):
+        CONF.SCR['module'] = 'WSGI'
+        slog = S_logger(SCRenv=CONF.SCR)
         data = sr['d']['data_key']
-        with open('code/' + sr['d']['file_path'] + '/local_conf.py', 'w') as f:
-            f.write('CONF = ' + json.dumps(data, indent=4))
+        try:
+            with open('code/' + sr['d']['file_path'] + '/local_conf.py', 'w') as f:
+                f.write('CONF = ' + json.dumps(data, indent=4))
+        except:
+            slog.output(lv='WARN', log='can\'t create local_conf.py. check to folder name.')

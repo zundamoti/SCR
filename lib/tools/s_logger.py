@@ -10,6 +10,7 @@ import config as CONF
 class S_logger:
 
     def __init__(self, SCRenv):
+        os.makedirs(SCRenv['logger']['path'], exist_ok=True)
         log_path = SCRenv['logger']['path'] + SCRenv['module'] + '.log'
         if(SCRenv['logger']['write_mode'] == 'w' and SCRenv['module'] == 'SCR'):
             for fn in ['SCR', 'SUB', 'GUI', 'WS']:

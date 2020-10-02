@@ -130,12 +130,12 @@ temp_scr.methods = {
                 });
             });
     },
-    $_write_local_conf: function (name) {
+    $_write_local_conf: function (data_name, local_folder) {
         this.$_receive({
             c: "local_conf",
             d: {
-                file_path: name,
-                data_key: this.code[name].data
+                file_path: local_folder,
+                data_key: this.code[data_name].data
             }
         });
     }
